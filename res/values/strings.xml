@@ -465,4 +465,6 @@
 	<string name="color_green">"green"</string>
 	<string name="color_blue">"blue"</string>
 	<string name="color_gray">"gray"</string>
+	<string name="pref_keyboard_model_title">Keyboard</string>
+	<string name="pref_keyboard_model_summary">Enable keymap hacks for external keyboards</string>
 </resources>

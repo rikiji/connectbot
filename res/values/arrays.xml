@@ -138,5 +138,9 @@
 		<item>del</item>
 		<item>backspace</item>
 	</string-array>
+	<string-array name="list_keyboards">
+		<item>None</item><item>bt-ms-6000</item>
+		
+	</string-array>
 
 </resources>

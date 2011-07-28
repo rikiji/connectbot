@@ -91,7 +91,7 @@
 			android:entries="@array/list_keymode"
 			android:entryValues="@array/list_keymode_values"
 			android:defaultValue="Use right-side keys"
-			/>
+			/><ListPreference android:entryValues="@array/list_keyboards" android:entries="@array/list_keyboards" android:key="keyboard" android:defaultValue="None" android:title="@string/pref_keyboard_model_title" android:summary="@string/pref_keyboard_model_summary"></ListPreference>
 
 		<ListPreference
 			android:key="camera"
@@ -121,8 +121,7 @@
 			android:title="@string/pref_bumpyarrows_title"
 			android:summary="@string/pref_bumpyarrows_summary"
 			android:defaultValue="true"
-			/>
-	</PreferenceCategory>
+			/></PreferenceCategory>
 
 	<PreferenceCategory
 		android:title="@string/pref_bell_category">
@@ -150,7 +149,9 @@
 			android:summary="@string/pref_bell_notification_summary"
 			android:defaultValue="false"
 			/>
+		
 
 	</PreferenceCategory>
+	
 
 </PreferenceScreen>

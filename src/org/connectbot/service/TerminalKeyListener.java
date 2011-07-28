@@ -70,6 +70,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 	private final VDUBuffer buffer;
 
 	private String keymode = null;
+	private String kbmodel = null;
 	private boolean hardKeyboard = false;
 
 	private int metaState = 0;
@@ -104,6 +105,7 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				== Configuration.KEYBOARD_QWERTY);
 
 		updateKeymode();
+		updateKbmodel();
 	}
 
 	/**
@@ -271,7 +273,20 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 				}
 			}
 			// try handling keymode shortcuts
-			if (hardKeyboard && !hardKeyboardHidden &&
+			if (kbmodel.equals(PreferenceConstants.KEYBOARD_BT_MS_6000)) {
+				switch (keyCode) {
+				case KeyEvent.KEYCODE_ALT_LEFT:
+				case KeyEvent.KEYCODE_ALT_RIGHT:
+					metaPress(META_ALT_ON);
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_LEFT:
+					metaPress(META_CTRL_ON);
+					return true;
+				case KeyEvent.KEYCODE_SHIFT_RIGHT:
+					metaPress(META_SHIFT_ON);
+					return true;
+				}
+			} else if (hardKeyboard && !hardKeyboardHidden &&
 					event.getRepeatCount() == 0) {
 				if (PreferenceConstants.KEYMODE_RIGHT.equals(keymode)) {
 					switch (keyCode) {
@@ -360,8 +375,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.decrementColumn();
 					bridge.redraw();
 				} else {
-					((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
-							getStateForBuffer());
+					if(kbmodel.equals(PreferenceConstants.KEYBOARD_BT_MS_6000))
+						((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
+								getStateForBuffer());
+					else
+						((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
+								getStateForBuffer());
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -372,8 +391,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.decrementRow();
 					bridge.redraw();
 				} else {
-					((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
-							getStateForBuffer());
+					if(kbmodel.equals(PreferenceConstants.KEYBOARD_BT_MS_6000))
+						((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
+								getStateForBuffer());
+					else
+						((vt320) buffer).keyPressed(vt320.KEY_UP, ' ',
+								getStateForBuffer());
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -384,8 +407,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.incrementRow();
 					bridge.redraw();
 				} else {
-					((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
-							getStateForBuffer());
+					if(kbmodel.equals( PreferenceConstants.KEYBOARD_BT_MS_6000))
+						((vt320) buffer).keyPressed(vt320.KEY_LEFT, ' ',
+								getStateForBuffer());
+					else
+						((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
+								getStateForBuffer());
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -396,8 +423,12 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 					selectionArea.incrementColumn();
 					bridge.redraw();
 				} else {
-					((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
-							getStateForBuffer());
+					if(kbmodel.equals(PreferenceConstants.KEYBOARD_BT_MS_6000))
+						((vt320) buffer).keyPressed(vt320.KEY_DOWN, ' ',
+								getStateForBuffer());
+					else
+						((vt320) buffer).keyPressed(vt320.KEY_RIGHT, ' ',
+								getStateForBuffer());
 					metaState &= ~META_TRANSIENT;
 					bridge.tryKeyVibrate();
 				}
@@ -566,10 +597,17 @@ public class TerminalKeyListener implements OnKeyListener, OnSharedPreferenceCha
 		if (PreferenceConstants.KEYMODE.equals(key)) {
 			updateKeymode();
 		}
+		if (PreferenceConstants.KEYBOARD.equals(key)) {
+			updateKbmodel();
+		}
 	}
 
 	private void updateKeymode() {
 		keymode = prefs.getString(PreferenceConstants.KEYMODE, PreferenceConstants.KEYMODE_RIGHT);
+	}
+
+	private void updateKbmodel() {
+		kbmodel = prefs.getString(PreferenceConstants.KEYBOARD, PreferenceConstants.KEYBOARD_NONE);
 	}
 
 	public void setCharset(String encoding) {

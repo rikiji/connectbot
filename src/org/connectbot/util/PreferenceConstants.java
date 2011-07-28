@@ -80,6 +80,10 @@ public class PreferenceConstants {
 
 	public static final String CONNECTION_PERSIST = "connPersist";
 
+	public static final String KEYBOARD = "keyboard";
+	public static final String KEYBOARD_NONE = "None";
+	public static final String KEYBOARD_BT_MS_6000 = "bt-ms-6000";
+
 	/* Backup identifiers */
 	public static final String BACKUP_PREF_KEY = "prefs";
 }
